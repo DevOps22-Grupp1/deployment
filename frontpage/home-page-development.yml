@@ -67,5 +67,5 @@ spec:
     app: home-page
   ports:
     - protocol: TCP
-      port: 4007
-      targetPort: 4007
+      port: 4004
+      targetPort: 4004
