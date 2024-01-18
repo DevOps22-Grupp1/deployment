@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-process
+  # namespace: scamazon
+  labels:
+    app: order-process
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-process
+  template:
+    metadata:
+      labels:
+        app: order-process
+    spec:
+      containers:
+        - name: order-process
+          image: passwordnotsafe/order-processing-service
+          ports:
+            - containerPort: 4007
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: opPort
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_port
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_port
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-process-service
+spec:
+  selector:
+    app: order-process
+  ports:
+    - protocol: TCP
+      port: 4007
+      targetPort: 4007

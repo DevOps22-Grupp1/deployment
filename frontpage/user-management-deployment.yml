@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management
+  # namespace: scamazon
+  labels:
+    app: user-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-management
+  template:
+    metadata:
+      labels:
+        app: user-management
+    spec:
+      containers:
+        - name: user-management
+          image: passwordnotsafe/user-management-service
+          ports:
+            - containerPort: 4006
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_port
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: umPort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-management-service
+spec:
+  selector:
+    app: user-management
+  ports:
+    - protocol: TCP
+      port: 4006
+      targetPort: 4006

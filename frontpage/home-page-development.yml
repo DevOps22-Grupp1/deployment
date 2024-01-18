@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-page
+  # namespace: scamazon
+  labels:
+    app: home-page
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-page
+  template:
+    metadata:
+      labels:
+        app: home-page
+    spec:
+      containers:
+        - name: home-page
+          image: passwordnotsafe/home-page-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4004
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: hpPort
+            - name: USER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: umUrl
+            - name: USER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: umPort
+            - name: PRODUCT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: pcUrl
+            - name: PRODUCT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: pcPort
+            - name: ORDER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: opUrl
+            - name: ORDER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: opPort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-page-service
+spec:
+  selector:
+    app: home-page
+  ports:
+    - protocol: TCP
+      port: 4007
+      targetPort: 4007

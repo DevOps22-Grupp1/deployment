@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+      # initContainers:
+      # - name: init-script
+      #   image: mongo:latest
+      #   command: ["sh", "-c", "mongo < /createUser.js"]
+      #   volumeMounts:
+      #   - name: scripts-volume
+      #     mountPath: /
+      containers:
+      - name: mongodb
+        image: mongo
+        # command: ['sh', '-c', 'echo The app is running!']
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-persistent-storage
+            mountPath: /data/db
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-password
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

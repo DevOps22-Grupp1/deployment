@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: microservice-configmap
+  # namespace: scamazon
+data:
+  hpPort: "4004"
+  pcUrl: product-catalog-service
+  pcPort: "4005"
+  umPort: "4006"
+  umUrl: user-management-service
+  opUrl: order-process-service
+  opPort: "4007"

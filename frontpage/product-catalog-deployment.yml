@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalog
+  # namespace: scamazon
+  labels:
+    app: product-catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-catalog
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+    spec:
+      containers:
+        - name: product-catalog
+          image: passwordnotsafe/produkt-catalog-service:master
+          ports:
+            - containerPort: 4005
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_port
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: microservice-configmap
+                  key: pcPort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-catalog-service
+spec:
+  selector:
+    app: product-catalog
+  ports:
+    - protocol: TCP
+      port: 4005
+      targetPort: 4005
