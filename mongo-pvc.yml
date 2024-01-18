@@ -3,16 +3,17 @@ kind: PersistentVolume
 metadata:
   name: mongo-pv
   labels:
-   type: local
+    type: local
 spec:
-  storageClassName: csi-hostpath-snapclass
+  storageClassName: standard
+
   capacity:
-   storage: 5Gi
+    storage: 5Gi
   accessModes:
-   - ReadWriteOnce
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-   path: /data/db
+    path: /data/db
 
 ---
 apiVersion: v1
@@ -21,24 +22,18 @@ metadata:
   name: mongo-pv-claim
 spec:
   # storageClassName: csi-hostpath-snapclass
-  
+
   accessModes:
-   - ReadWriteOnce
+    - ReadWriteOnce
   resources:
-   requests:
-     storage: 5Gi
-  storageClassName: csi-hostpath-sc
+    requests:
+      storage: 5Gi
+  storageClassName: standard
   # dataSource:
   #   name: new-snapshot-demo
   #   kind: VolumeSnapshot
   #   apiGroup: snapshot.storage.k8s.io
-
-
-
-
-
-
-#      # example-pvc.yaml $ kubectl -n default  exec -it  mongodb-deployment-565f959dff-g2sb7  -- bash 
+#      # example-pvc.yaml $ kubectl -n default  exec -it  mongodb-deployment-565f959dff-g2sb7  -- bash
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
