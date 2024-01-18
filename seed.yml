@@ -3,32 +3,32 @@ kind: Job
 metadata:
   name: seed-database
 spec:
-  ttlSecondsAfterFinished: 50
+  # ttlSecondsAfterFinished: 50
   template:
     metadata:
       name: seed-database-test
     spec:
       containers:
-      - name: seed-container
-        image: passwordnotsafe/seed-data
-        imagePullPolicy: Always
-        env:
-          - name: DB_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: mongodb-configmap
-                key: database_url
-          - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: mongodb-secret
-                key: mongo-root-username
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mongodb-secret
-                key: mongo-root-password
-          - name: DB_PORT
-            value: "27017"
+        - name: seed-container
+          image: passwordnotsafe/seed-data
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: DB_PORT
+              value: "27017"
       restartPolicy: Never
   backoffLimit: 4
