@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: home-page
-          image: passwordnotsafe/home-page-service
+          image: dennisnevback/home-page-service:dennis-test
           imagePullPolicy: Always
           ports:
             - containerPort: 4004
