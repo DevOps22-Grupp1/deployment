@@ -1,0 +1,21 @@
+name: Fetch Docker Image Tags
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  fetch-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: sudo apt update && sudo apt install -y jq
+
+      - name: Fetch Docker Image For home 
+        run: |
+          IMAGE_NAME="passwordnotsafe/home-page-service"
+          API_URL="https://registry.hub.docker.com/v1/repositories/$IMAGE_NAME/tags"
+          TAGS=$(curl -s "$API_URL" | jq -r '.[].name')
+          echo "Available tags for $IMAGE_NAME:"
+          echo "$TAGS"
