@@ -20,8 +20,8 @@ jobs:
             RESPONSE=$(curl -s "$API_URL")
             TAGS=$(echo "$RESPONSE" | jq -r '.results[] | select(.name != "latest" and .name != "1.0.0") | .name')
             
-            path = $(git ls-files | grep "home-page-development.yml")
-            echo "$path"
+            #path = $(git ls-files | grep "home-page-development.yml")
+            echo "$(ls)"
             echo "$(basename $PWD)"
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
