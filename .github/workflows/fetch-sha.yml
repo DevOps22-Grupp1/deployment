@@ -20,9 +20,6 @@ jobs:
             RESPONSE=$(curl -s "$API_URL")
             NEW_TAG=$(echo "$RESPONSE" | jq -r '.results[] | select(.name != "latest" and .name != "1.0.0") | .name')
             
-            #path = $(git ls-files | grep "home-page-development.yml")
-            echo "$(ls -la )" #lista alla filer för att se vad vi har för permission
-            echo "$(basename $PWD)" #lista var vi startar ifrån
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
             sed -i "s|image: passwordnotsafe/home-page-service:.*|image: passwordnotsafe/home-page-service:$NEW_TAG|g" frontpage/home-page-development.yml
