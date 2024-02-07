@@ -14,8 +14,11 @@ jobs:
 
       - name: Fetch Docker Image For home 
         run: |
-          IMAGE_NAME="passwordnotsafe/home-page-service"
-          API_URL="https://registry.hub.docker.com/v1/repositories/$IMAGE_NAME/tags"
-          TAGS=$(curl -s "$API_URL" | jq -r '.[].name')
-          echo "Available tags for $IMAGE_NAME:"
-          echo "$TAGS"
+            IMAGE_NAME="passwordnotsafe/home-page-service"
+            API_URL="https://registry.hub.docker.com/v1/repositories/$IMAGE_NAME/tags"
+            RESPONSE=$(curl -s "$API_URL")
+            echo "API Response:"
+            echo "$RESPONSE"
+            TAGS=$(echo "$RESPONSE" | jq -r '.[].name')
+            echo "Available tags for $IMAGE_NAME:"
+            echo "$TAGS"
