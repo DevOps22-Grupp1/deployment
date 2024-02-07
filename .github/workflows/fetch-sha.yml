@@ -21,11 +21,10 @@ jobs:
             TAGS=$(echo "$RESPONSE" | jq -r '.results[] | select(.name != "latest" and .name != "1.0.0") | .name')
             
             #path = $(git ls-files | grep "home-page-development.yml")
-            echo "$(ls)"
-            echo "$(basename $PWD)"
+            
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
-            sed -i "s|image: passwordnotsafe/home-page-service:.*|image: passwordnotsafe/home-page-service:$NEW_TAG|g" /frontend/home-page-development.yml
+            sed -i "s|image: passwordnotsafe/home-page-service:.*|image: passwordnotsafe/home-page-service:$NEW_TAG|g" frontpage/home-page-development.yml
 
             # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
-            cat /frontend/home-page-development.yml
+            cat frontpage/home-page-development.yml
