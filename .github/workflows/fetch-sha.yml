@@ -18,6 +18,6 @@ jobs:
             RESPONSE=$(curl -s "$API_URL")
             echo "API Response:"
             echo "$RESPONSE"
-            TAGS=$(echo "$RESPONSE" | jq -r ".[].name")
+            TAGS=$(echo "$RESPONSE" | jq -r ".results[].name")
             
             echo "testing a thing fpr the past: $TAGS"
