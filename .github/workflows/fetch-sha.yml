@@ -14,17 +14,15 @@ jobs:
       - name: Install jq
         run: sudo apt update && sudo apt install -y jq
 
-      - name: Fetch Docker Image For home 
+      - name: Fetch Docker Image For home-page-service 
         run: |
             API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/home-page-service/tags"
             RESPONSE=$(curl -s "$API_URL")
-            echo "API Response:"
             TAGS=$(echo "$RESPONSE" | jq -r '.results[] | select(.name != "latest" and .name != "1.0.0") | .name')
             
-            #path = $(git ls-files | grep "home-page-development.yml")
+            path = $(git ls-files | grep "home-page-development.yml")
+            echo $path
             echo "$(basename $PWD)"
-            echo "$(all files: ls)"
-            echo "$(all files: git ls-files)"
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
             sed -i "s|image: passwordnotsafe/home-page-service:.*|image: passwordnotsafe/home-page-service:$NEW_TAG|g" /frontend/home-page-development.yml
