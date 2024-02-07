@@ -21,10 +21,10 @@ jobs:
             echo "API Response:"
             TAGS=$(echo "$RESPONSE" | jq -r '.results[] | select(.name != "latest" and .name != "1.0.0") | .name')
             
-            #echo $(git ls-files | grep "home-page-development.yml")
+            path = $(git ls-files | grep "home-page-development.yml")
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
-            #sed -i "s|image: passwordnotsafe/home-page-service:.*|image: passwordnotsafe/home-page-service:$NEW_TAG|g" scamazon/frontend/home-page-development.yml
+            sed -i "s|image: passwordnotsafe/home-page-service:.*|image: passwordnotsafe/home-page-service:$NEW_TAG|g" $path
 
             # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
-            #cat scamazon/frontend/home-page-development.yml
+            cat $path
