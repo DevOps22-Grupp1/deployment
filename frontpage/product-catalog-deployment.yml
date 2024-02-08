@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: product-catalog
-          image: passwordnotsafe/produkt-catalog-service:master
+          image: passwordnotsafe/produkt-catalog-service
           ports:
             - containerPort: 4005
           env:
