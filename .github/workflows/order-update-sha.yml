@@ -17,7 +17,8 @@ jobs:
         run: |
             API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/order-processing-service/tags"
             API_CALL=$(curl -s "$API_URL")
-            NEW_TAG=$(echo "$API_CALL" | jq -r '.results[] | select(.name != "latest" and .name != "master") | .name')
+            NEW_TAG=$(echo "$API_CALL" | jq -r '[.results[] | select(.name != "latest" and .name != "master")] | sort_by(.last_updated) | .[-1].name')
+
             # save it to a file in the repository ??? 
             
 

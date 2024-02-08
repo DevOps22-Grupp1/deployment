@@ -1,8 +1,8 @@
 name: Fetch Docker Image Tags for Home Page - Trigger from another repo
 
 on:
-   push:
-    branches: ["*"]
+   repository_dispatch:
+    types: [custom_event_name]
 
 jobs:
   fetch-tags:
@@ -18,11 +18,11 @@ jobs:
             API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/home-page-service/tags"
             API_CALL=$(curl -s "$API_URL")
             NEW_TAG=$(echo "$API_CALL" | jq -r '[.results[] | select(.name != "latest" and .name != "1.0.0")] | sort_by(.last_updated) | .[-1].name')
-            echo "$NEW_TAG" 
+            echo "NEW_TAG" 
             
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
-            #sed -i "s/home-page-service/home-page-service:$NEW_TAG/g" frontpage/home-page-development.yml
+            sed -i "s/home-page-service/home-page-service:$NEW_TAG/g" frontpage/home-page-development.yml
 
             # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
-            #cat frontpage/home-page-development.yml
+            cat frontpage/home-page-development.yml
