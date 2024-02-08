@@ -1,8 +1,7 @@
 name: Trigger from Another Repository
 
-on:
-  repository_dispatch:
-    types: [custom_event_name]
+on: workflow_dispatch
+
 
 jobs:
   build:
