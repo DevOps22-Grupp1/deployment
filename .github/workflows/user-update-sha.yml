@@ -2,7 +2,7 @@ name: Fetch Docker Image Tags for User - Trigger from another repo
 
 on:
    repository_dispatch:
-    types: [custom_event_name]
+    types: [update-user]
 
 jobs:
   fetch-tags:
@@ -21,7 +21,6 @@ jobs:
 
             # save it to a file in the repository ??? 
             
-
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
             sed -i "s/user-management-serviceice:master/user-management-serviceice:$NEW_TAG/g" frontpage/user-management-deployment.yml
 
