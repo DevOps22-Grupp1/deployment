@@ -1,0 +1,13 @@
+name: Trigger from Another Repository
+
+on:
+  repository_dispatch:
+    types: [custom_event_name]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Payload
+        run: echo "The payload was ${{ toJson(github.event.client_payload) }}"
+      # Add more steps as needed

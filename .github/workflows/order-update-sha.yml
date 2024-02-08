@@ -1,9 +1,8 @@
-name: Fetch Docker Image Tags
+name: Fetch Docker Image Tags for Order - Trigger from another repo
 
 on:
-  push:
-    branches:
-      - main
+   repository_dispatch:
+    types: [custom_event_name]
 
 jobs:
   fetch-tags:
@@ -16,14 +15,14 @@ jobs:
 
       - name: Fetch Docker Image Tags for home-page-service 
         run: |
-            API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/home-page-service/tags"
+            API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/order-processing-service/tags"
             API_CALL=$(curl -s "$API_URL")
-            NEW_TAG=$(echo "$API_CALL" | jq -r '.results[] | select(.name != "latest" and .name != "1.0.0") | .name')
+            NEW_TAG=$(echo "$API_CALL" | jq -r '.results[] | select(.name != "latest" and .name != "master") | .name')
             # save it to a file in the repository ??? 
             
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
-            sed -i "s/home-page-service/home-page-service:$NEW_TAG/g" frontpage/home-page-development.yml
+            sed -i "s/order-processing-service/order-processing-service:$NEW_TAG/g" frontpage/order-processing-deployment.yml
 
             # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
-            cat frontpage/home-page-development.yml
+            cat frontpage/order-processing-deployment.yml

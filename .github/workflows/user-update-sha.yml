@@ -1,0 +1,28 @@
+name: Fetch Docker Image Tags for User - Trigger from another repo
+
+on:
+   repository_dispatch:
+    types: [custom_event_name]
+
+jobs:
+  fetch-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install jq
+        run: sudo apt update && sudo apt install -y jq
+
+      - name: Fetch Docker Image Tags for product-catalog-service 
+        run: |
+            API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/user-management-service/tags"
+            API_CALL=$(curl -s "$API_URL")
+            NEW_TAG=$(echo "$API_CALL" | jq -r '.results[] | select(.name != "latest" ) | .name')
+            # save it to a file in the repository ??? 
+            
+
+            # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
+            sed -i "s/user-management-serviceice:master/user-management-serviceice:$NEW_TAG/g" frontpage/user-management-deployment.yml
+
+            # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
+            cat frontpage/user-management-deployment.yml
