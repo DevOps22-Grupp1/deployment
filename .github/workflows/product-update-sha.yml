@@ -21,7 +21,7 @@ jobs:
             
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
-            sed -i "s/produkt-catalog-service:master/produkt-catalog-service:$NEW_TAG/g" frontpage/product-catalog-deployment.yml
+            sed -i "s/produkt-catalog-service/produkt-catalog-service:$NEW_TAG/g" frontpage/product-catalog-deployment.yml
 
             # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
             cat frontpage/product-catalog-deployment.yml
