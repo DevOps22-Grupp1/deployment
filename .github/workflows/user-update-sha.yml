@@ -1,8 +1,8 @@
 name: Fetch Docker Image Tags for User - Trigger from another repo
 
 on:
-   repository_dispatch:
-    types: [update-user]
+   workflow_dispatch:
+    # types: [update-user]
 
 jobs:
   fetch-tags:
