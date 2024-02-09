@@ -17,7 +17,7 @@ jobs:
             API_CALL=$(curl -s "$API_URL")
             NEW_TAG=$(echo "$API_CALL" | jq -r '[.results[] | select(.name != "master" and .name != "latest")] | sort_by(.last_updated) | .[-1].name')
 
-            # save it to a file in the repository ??? 
+            echo "$NEW_TAG" 
             
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
