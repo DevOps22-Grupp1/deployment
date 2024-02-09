@@ -1,8 +1,6 @@
 name: Fetch Docker Image Tags for Product - Trigger from another repo
 
-on:
-   repository_dispatch:
-    types: [custom_event_name]
+on: workflow_dispatch
 
 jobs:
   fetch-tags:
