@@ -15,10 +15,7 @@ jobs:
         run: |
             API_URL="https://registry.hub.docker.com/v2/repositories/passwordnotsafe/produkt-catalog-service/tags"
             API_CALL=$(curl -s "$API_URL")
-            NEW_TAG=$(echo "$API_CALL" | jq -r '[.results[] | select(.name != "master" and .name != "latest")] | sort_by(.last_updated) | .[-1].name')
-
-            echo "$NEW_TAG" 
-            
+            NEW_TAG=$(echo "$API_CALL" | jq -r '[.results[] | select(.name != "master" and .name != "latest")] | sort_by(.last_updated) | .[-1].name')            
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
             sed -i "s/produkt-catalog-service/produkt-catalog-service:$NEW_TAG/g" frontpage/product-catalog-deployment.yml
