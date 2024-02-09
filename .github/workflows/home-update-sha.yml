@@ -20,7 +20,7 @@ jobs:
             
 
             # Ersätt den gamla taggen med den nya taggen i Deployment-filen med hjälp av sed
-            sed -i "s/home-page-service/home-page-service:$NEW_TAG/g" frontpage/home-page-development.yml
+            sed -i "s/passwordnotsafe/home-page-service/passwordnotsafe/home-page-service:$NEW_TAG/g" frontpage/home-page-development.yml
 
             # Visa innehållet i den uppdaterade Deployment-filen för att verifiera ändringen
             cat frontpage/home-page-development.yml
